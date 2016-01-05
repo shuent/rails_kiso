@@ -3,7 +3,7 @@
   <p class="alert"><%= flash.alert %> </p>
 <% end %>
 <%= form_tag :session do %>
-<table class="login_form">
+<table id="login_form">
   <tr>
     <td style="text-align: right">ユーザー名</td>
     <td><%= text_field_tag "name", "", style: "width: 120px" %></td>

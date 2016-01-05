@@ -1,51 +1,15 @@
 class ArticlesController < ApplicationController
 	# before_action :article_params
+	before_action :login_required, except: [:index, :show]
 
 	def index
-		@articles = Article.order(released_at: :desc) 
+		@articles = Article.open.readable_for(current_member)
+			.order(released_at: :desc).paginate(page: params[:page], per_page: 5)
  	end
 
  	def show 
- 		@article = Article.find(params[:id])
- 	end
-
- 	def new
- 		@article = Article.new
- 	end
-
- 	def edit
- 		@article = Article.find(params[:id])
- 	end
-
- 	def create
- 		@article = Article.new(params[:article])
- 		if @article.save
- 			redirect_to @article, notice: "ニュース記事を登録したよ"
- 		else
- 			render "new"
- 		end
- 		
- 	end
-
- 	def update
- 		@article = Article.find(params[:id])
- 		@article.assign_attributes(params[:article])
- 		if @article.save
- 			redirect_to @article, notice: "ニュース記事を更新したよん"
- 		else
- 			render "edit"
- 		end
- 	end
-
- 	def destroy
- 		@article = Article.find(params[:id])
- 		@article.destroy
- 		redirect_to :articles
+ 		@article = Article.open.readable_for(current_member).find(params[:id])
  	end
 
  	private
- 	def article_params
- 		@article = Article.find(params[:id])
- 	end
-
 end

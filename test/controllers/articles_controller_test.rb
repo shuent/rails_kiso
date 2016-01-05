@@ -1,7 +1,12 @@
 require "test_helper"
 
 class ArticlesControllerTest < ActionController::TestCase
+	def setup
+		login_as("taro")
+	end
+
 	test "index" do
+		logout
 		5.times { FactoryGirl.create(:article) }
 		get :index
 		assert_response :success
@@ -9,6 +14,7 @@ class ArticlesControllerTest < ActionController::TestCase
 	end
 
 	test "show" do
+		logout
 		article = FactoryGirl.create(:article, expired_at: nil)
 		get :show , id: article
 		assert_response :success
@@ -17,6 +23,12 @@ class ArticlesControllerTest < ActionController::TestCase
 	test "new" do
 		get :new
 		assert_response :success
+	end
+
+	test "new before login" do
+		logout
+		get :new
+		assert_response :forbidden
 	end
 
 	test "edit" do

@@ -45,4 +45,17 @@ class ArticleTest < ActiveSupport::TestCase
 		assert_not_includes articles, article3, "Not include article of future"
 		assert_includes articles, article4, "Case exipired is nil"
 	end
+
+	test "readable_for" do
+		article1 = FactoryGirl.create(:article)
+		article2 = FactoryGirl.create(:article, member_only: true)
+
+		articles = Article.readable_for(nil)
+		assert_includes articles, article1, "現在の記事が含まれる"
+		assert_not_includes articles, article2, "会員限定の記事は含まない"
+
+		articles = Article.readable_for(FactoryGirl.create(:member))
+		assert_includes articles, article1, "現在の記事が含まれる"
+		assert_includes articles, article2, "会員限定の記事が含まれる"
+	end
 end

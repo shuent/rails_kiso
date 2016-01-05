@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title><%= page_title %></title>
+	<%= stylesheet_link_tag "application" %>
+</head>
+<body>
+	<div class="container">
+		<div class="header">
+			<p><%= link_to "Morning Glory Top", :root %></p>
+		</div>
+		<%= yield %>
+		<div class="footer">
+			<%= render "shared/footer" %>
+		</div>
+	</div>
+</body>
+</html>

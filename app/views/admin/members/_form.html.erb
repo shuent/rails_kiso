@@ -1,6 +1,24 @@
 <%= render "shared/errors", obj: @member %>
 
 <table class="attr">
+<%= form.fields_for :image do |imgf| %>
+  <tr>
+    <th><%= imgf.label :uploaded_image %></th>
+    <td>
+      <%= imgf.file_field :uploaded_image %>
+      <% if !imgf.object.new_record? && imgf.object.errors.empty? %>
+      <div>
+        <%= imgf.check_box :_destroy %>
+        <%= imgf.label :_destroy %>
+        <%= imgf.hidden_field :id %>
+      </div>
+      <% end %>
+    </td>
+  </tr>
+
+    
+<% end %>
+
   <tr>
     <th><%= form.label :number %></th>
     <td><%= form.text_field :number, size: 8 %></td>
@@ -32,13 +50,15 @@
     <th><%= form.label :email %></th>
     <td><%= form.text_field :email %></td>
   </tr>
+<% if controller.kind_of?(MembersController) %>
   <tr>
     <th><%= Member.human_attribute_name(:administrator) %></th>
     <td>
-      <%= form.check_box :administrator %>
+      <%= form.check_box :administrator, disabled: !current_member.administrator? %>
       <%= form.label :administrator %>
     </td>
   </tr>
+<% end %>
   <tr>
     <th><%= form.label :password %></th>
     <td><%= form.password_field :password %></td>
